@@ -3,286 +3,299 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>H代币 - 收益 & 空投预估</title>
+  <title>H Token • 正向飞轮经济模型</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --bg: #f9fafb;
-      --card: #ffffff;
-      --text: #111827;
-      --text-light: #6b7280;
-      --border: #e5e7eb;
-      --success: #10b981;
-      --warning: #f59e0b;
+      --bg: #0f0f17;
+      --card: rgba(30, 30, 50, 0.6);
+      --primary: #7c3aed;
+      --primary-dark: #5b21b6;
+      --accent: #a78bfa;
+      --text: #e2e8f0;
+      --text-light: #94a3b8;
+      --border: rgba(124, 58, 237, 0.2);
+      --glow: 0 0 20px rgba(124, 58, 237, 0.4);
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--bg);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0a0a15 0%, #13132b 100%);
       color: var(--text);
-      line-height: 1.5;
       min-height: 100vh;
-      padding: 1.5rem 1rem;
+      overflow-x: hidden;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 0 1.5rem;
     }
 
     header {
       text-align: center;
-      padding: 2rem 0 1.5rem;
+      padding: 6rem 0 4rem;
+      position: relative;
     }
 
-    h1 {
-      font-size: 2.1rem;
-      color: var(--primary-dark);
-      margin-bottom: 0.5rem;
+    .glow-title {
+      font-size: 4.2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #c084fc, #a78bfa, #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
+      letter-spacing: -1px;
     }
 
     .subtitle {
+      font-size: 1.4rem;
       color: var(--text-light);
-      font-size: 1.05rem;
+      margin-top: 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .calculator-card {
-      background: var(--card);
-      border-radius: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
-      padding: 1.8rem;
-      margin: 1.5rem 0;
+    .section {
+      padding: 4rem 0;
     }
 
-    .input-group {
-      margin-bottom: 1.4rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.95rem;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-      color: var(--text);
-    }
-
-    input, select {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 1.05rem;
-      transition: border-color 0.2s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
-    }
-
-    .section-title {
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--primary-dark);
-      margin: 1.8rem 0 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .result-box {
-      background: #f0fdfa;
-      border: 1px solid #a7f3d0;
-      border-radius: 12px;
-      padding: 1.4rem;
-      margin: 1.2rem 0;
-    }
-
-    .result-row {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.8rem 0;
-      font-size: 1.05rem;
-    }
-
-    .result-row strong {
-      color: var(--primary-dark);
-    }
-
-    .highlight { color: var(--success); font-weight: 600; }
-    .alert-warning {
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #92400e;
-      padding: 1rem;
-      border-radius: 8px;
-      margin: 1rem 0;
-      font-size: 0.95rem;
-    }
-
-    .note {
-      font-size: 0.9rem;
-      color: var(--text-light);
-      margin-top: 1.5rem;
-      line-height: 1.4;
-    }
-
-    footer {
+    h2 {
+      font-size: 2.8rem;
       text-align: center;
-      color: var(--text-light);
-      font-size: 0.85rem;
-      margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
     }
 
-    @media (max-width: 500px) {
-      .calculator-card { padding: 1.4rem; }
-      h1 { font-size: 1.8rem; }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 2px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .glass-card {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.4s ease;
+      box-shadow: var(--glow);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), var(--glow);
+    }
+
+    .icon {
+      font-size: 2.4rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .tier-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+
+    .tier-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      transition: width 1.2s ease;
+    }
+
+    .flywheel {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: 4rem auto;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cycle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 3px dashed var(--accent);
+      border-radius: 50%;
+      animation: rotate 30s linear infinite;
+      opacity: 0.3;
+    }
+
+    .step {
+      position: absolute;
+      width: 180px;
+      text-align: center;
+      padding: 1.2rem;
+      background: rgba(30,30,50,0.8);
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+
+    .step:hover {
+      transform: scale(1.08);
+      box-shadow: var(--glow);
+    }
+
+    .step:nth-child(1) { top: 0;    left: 50%; transform: translate(-50%, 0); }
+    .step:nth-child(2) { top: 35%;  right: 0;  transform: translate(0, -50%); }
+    .step:nth-child(3) { bottom: 0; right: 50%; transform: translate(50%, 0); }
+    .step:nth-child(4) { bottom: 35%; left: 0;  transform: translate(0, 50%); }
+
+    .arrow {
+      position: absolute;
+      font-size: 2.5rem;
+      color: var(--accent);
+      opacity: 0.7;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .glow-title { font-size: 3rem; }
+      h2 { font-size: 2.2rem; }
+      .flywheel { max-width: 400px; }
+      .step { width: 140px; font-size: 0.95rem; padding: 1rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-
   <header>
-    <h1>H代币收益 & 空投预估</h1>
-    <div class="subtitle">质押收益 + 交易空投奖励模拟</div>
+    <div class="container">
+      <h1 class="glow-title">H Token</h1>
+      <div class="subtitle">
+        质押USDT → 每日高收益H代币 → 交易解锁新币空投 → 形成正向增长飞轮
+      </div>
+    </div>
   </header>
 
-  <div class="calculator-card">
+  <section class="section">
+    <div class="container">
+      <h2>核心机制</h2>
+      <div class="card-grid">
+        <div class="glass-card">
+          <div class="icon"><i class="fas fa-coins"></i></div>
+          <h3>灵活质押</h3>
+          <p>USDT质押，无锁仓、无周期，随时赎回</p>
+          <p>每日20:00发放等值H代币（实时价格折算）</p>
+        </div>
 
-    <!-- 质押部分 -->
-    <div class="section-title">质押收益计算</div>
+        <div class="glass-card">
+          <div class="icon"><i class="fas fa-chart-line"></i></div>
+          <h3>阶梯收益率</h3>
+          <p>持有越久，收益越高（最高1.2%/日）</p>
+          <div class="tier-bar"><div class="tier-fill" style="width:100%"></div></div>
+        </div>
 
-    <div class="input-group">
-      <label>质押金额 (USDT)</label>
-      <input type="number" id="principal" value="1000" min="100" step="100">
-    </div>
+        <div class="glass-card">
+          <div class="icon"><i class="fas fa-gift"></i></div>
+          <h3>交易空投</h3>
+          <p>10天平均流水 ≥ 500 USDT</p>
+          <p>解锁 ≈10% 等值新币空投奖励</p>
+        </div>
 
-    <div class="input-group">
-      <label>持有天数</label>
-      <input type="number" id="days" value="30" min="1" max="365">
-    </div>
-
-    <div class="input-group">
-      <label>当前H代币价格 (USD)</label>
-      <input type="number" id="hPrice" value="0.01" step="0.0001" min="0.0001">
-    </div>
-
-    <div class="result-box" id="stakingResult">
-      <div class="result-row">
-        <span>累计收益 (USDT等值)</span>
-        <strong id="totalRewardUSD">—</strong>
-      </div>
-      <div class="result-row">
-        <span>获得H代币数量</span>
-        <strong id="totalH">—</strong>
-      </div>
-      <div class="result-row" style="font-size:1.15rem;">
-        <span>日均收益</span>
-        <strong class="highlight" id="dailyAvg">—</strong>
-      </div>
-    </div>
-
-    <!-- 空投部分 -->
-    <div class="section-title">交易量空投预估（10天周期）</div>
-
-    <div class="input-group">
-      <label>过去10天平均每日交易流水 (USDT)</label>
-      <input type="number" id="dailyVolume" value="50" min="0" step="10" placeholder="例如：50 = 10天总流水500U">
-    </div>
-
-    <div class="result-box" id="airdropResult">
-      <div class="result-row">
-        <span>10天总交易流水</span>
-        <strong id="totalVol">—</strong>
-      </div>
-      <div class="result-row">
-        <span>是否达标 (≥500U/10天)</span>
-        <strong id="qualified" class="highlight">—</strong>
-      </div>
-      <div class="result-row" style="font-size:1.15rem;">
-        <span>预计空投奖励价值</span>
-        <strong class="highlight" id="airdropValue">—</strong>
+        <div class="glass-card">
+          <div class="icon"><i class="fas fa-shield-halved"></i></div>
+          <h3>5%交易税</h3>
+          <p>全部进入运营地址，用于回购、流动性、开发</p>
+          <p>创造可持续价值捕获</p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="alert-warning" id="airdropNote" style="display:none;">
-      未达标（需平均每日 ≥ 50 USDT 流水）。提高交易量可解锁奖励。
+  <section class="section">
+    <div class="container">
+      <h2>正向飞轮循环</h2>
+      <div class="flywheel">
+        <div class="cycle"></div>
+        <div class="step">
+          <strong>1. 质押USDT</strong><br>获得H代币收益
+        </div>
+        <div class="step">
+          <strong>2. 交易H代币</strong><br>产生流水 & 税费
+        </div>
+        <div class="step">
+          <strong>3. 解锁空投</strong><br>获得新币奖励
+        </div>
+        <div class="step">
+          <strong>4. 再质押/交易</strong><br>放大收益 & 需求
+        </div>
+
+        <div class="arrow" style="top:18%; left:52%; transform:rotate(-45deg);">→</div>
+        <div class="arrow" style="top:50%; right:18%; transform:rotate(45deg);">→</div>
+        <div class="arrow" style="bottom:18%; right:52%; transform:rotate(135deg);">→</div>
+        <div class="arrow" style="bottom:50%; left:18%; transform:rotate(-135deg);">→</div>
+      </div>
     </div>
+  </section>
 
-    <div class="note">
-      • 收益：阶梯日利率（1-7天0.5% → 61+天1.2%），每日发放H代币<br>
-      • 空投：假设10天平均流水≥500 USDT 可获 ≈10% 等值新币奖励（示例值，可调整）<br>
-      • 所有数值仅为模拟，实际受市场价格、规则变动影响
+  <section class="section">
+    <div class="container">
+      <h2>收益率阶梯一览</h2>
+      <div class="card-grid">
+        <div class="glass-card">
+          <h3>1–7天</h3>
+          <div class="tier-bar"><div class="tier-fill" style="width:40%"></div></div>
+          <p><strong>0.5% / 日</strong></p>
+        </div>
+        <div class="glass-card">
+          <h3>8–15天</h3>
+          <div class="tier-bar"><div class="tier-fill" style="width:50%"></div></div>
+          <p><strong>0.6% / 日</strong></p>
+        </div>
+        <div class="glass-card">
+          <h3>16–30天</h3>
+          <div class="tier-bar"><div class="tier-fill" style="width:70%"></div></div>
+          <p><strong>0.8% / 日</strong></p>
+        </div>
+        <div class="glass-card">
+          <h3>31–60天</h3>
+          <div class="tier-bar"><div class="tier-fill" style="width:85%"></div></div>
+          <p><strong>1.0% / 日</strong></p>
+        </div>
+        <div class="glass-card" style="grid-column: span 2; max-width:500px; margin:0 auto;">
+          <h3>61天以上</h3>
+          <div class="tier-bar"><div class="tier-fill" style="width:100%"></div></div>
+          <p><strong>1.2% / 日（最高阶段）</strong></p>
+        </div>
+      </div>
     </div>
-
-  </div>
-
-</div>
-
-<footer>
-  模拟工具 | 仅供参考 | © 2026 H代币模型
-</footer>
-
-<script>
-  // 质押收益阶梯
-  function getDailyRate(day) {
-    if (day <= 7) return 0.005;
-    if (day <= 15) return 0.006;
-    if (day <= 30) return 0.008;
-    if (day <= 60) return 0.010;
-    return 0.012;
-  }
-
-  function calculate() {
-    // 质押部分
-    const principal = parseFloat(document.getElementById('principal').value) || 0;
-    const days      = parseInt(document.getElementById('days').value) || 1;
-    const hPrice    = parseFloat(document.getElementById('hPrice').value) || 0.01;
-
-    let totalRewardUSD = 0;
-    if (principal >= 100 && days >= 1 && hPrice > 0) {
-      for (let d = 1; d <= days; d++) {
-        totalRewardUSD += principal * getDailyRate(d);
-      }
-    }
-
-    const totalH = hPrice > 0 ? totalRewardUSD / hPrice : 0;
-    const dailyAvg = days > 0 ? totalRewardUSD / days : 0;
-
-    document.getElementById('totalRewardUSD').textContent = totalRewardUSD.toFixed(2) + ' USDT';
-    document.getElementById('totalH').textContent         = totalH.toLocaleString(undefined, {maximumFractionDigits:0}) + ' H';
-    document.getElementById('dailyAvg').textContent       = dailyAvg.toFixed(2) + ' USDT/天';
-
-    // 空投部分
-    const dailyVol   = parseFloat(document.getElementById('dailyVolume').value) || 0;
-    const totalVol   = dailyVol * 10;
-    const qualified  = totalVol >= 500;
-    const airdropPct = 0.10; // 假设10%
-    const airdropVal = totalVol * airdropPct;
-
-    document.getElementById('totalVol').textContent    = totalVol.toFixed(0) + ' USDT';
-    document.getElementById('qualified').textContent   = qualified ? '已达标 ✓' : '未达标 ✗';
-    document.getElementById('qualified').style.color   = qualified ? 'var(--success)' : 'var(--warning)';
-    document.getElementById('airdropValue').textContent = airdropVal.toFixed(2) + ' USDT 等值新币';
-
-    // 提示
-    document.getElementById('airdropNote').style.display = qualified ? 'none' : 'block';
-  }
-
-  // 绑定输入事件
-  ['principal', 'days', 'hPrice', 'dailyVolume'].forEach(id => {
-    document.getElementById(id).addEventListener('input', calculate);
-  });
-
-  // 初始计算
-  calculate();
-</script>
+  </section>
 
 </body>
-        </html>
+</html>
