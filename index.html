@@ -3,107 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>H代币经济模型 · 简易模拟器</title>
+    <title>H代币 · 海豚风格仪表盘</title>
     <style>
-        * { box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
-        body { background: #f3f6fc; margin: 20px; display: flex; justify-content: center; }
-        .container { max-width: 1300px; width: 100%; background: white; border-radius: 28px; box-shadow: 0 20px 40px rgba(0,20,50,0.15); padding: 24px 28px; }
-        h1 { font-size: 1.9rem; font-weight: 600; margin: 0 0 8px 0; color: #0b2b4a; display: flex; align-items: center; gap: 8px; }
-        h1 small { font-size: 1rem; font-weight: 400; color: #2c5779; margin-left: 12px; }
-        .subtitle { color: #2e4e6f; border-left: 4px solid #3080d0; padding-left: 18px; margin: 10px 0 25px 0; font-weight: 400; background: #eaf1fb; border-radius: 0 20px 20px 0; line-height: 1.5; }
-        .input-panel { background: #f4f9ff; border-radius: 24px; padding: 22px 25px; margin-bottom: 30px; border: 1px solid #cbdded; display: flex; flex-wrap: wrap; gap: 25px 40px; align-items: flex-end; }
-        .input-group { min-width: 150px; flex: 1 1 160px; }
-        .input-group label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: #1b4b77; margin-bottom: 6px; }
-        .input-group input { width: 100%; padding: 12px 15px; font-size: 1rem; border: 1px solid #b6d0e8; border-radius: 40px; background: white; font-weight: 500; transition: 0.2s; }
-        .input-group input:focus { outline: none; border-color: #1f6fb0; box-shadow: 0 0 0 3px rgba(30,112,190,0.2); }
-        .input-group span { font-size: 0.85rem; color: #476b8f; margin-left: 12px; }
-        .btn-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 12px; width: 100%; }
-        .btn { background: #1d6fb0; border: none; color: white; padding: 14px 38px; border-radius: 60px; font-size: 1.1rem; font-weight: 600; cursor: pointer; box-shadow: 0 6px 14px rgba(20,80,150,0.3); transition: 0.15s; border: 1px solid #1460a0; }
-        .btn:hover { background: #155a92; transform: scale(1.02); }
-        .btn:active { background: #0e4270; box-shadow: none; }
-        .warning-note { background: #fff2db; border-radius: 30px; padding: 12px 25px; color: #a35f00; border: 1px solid #ffc107; font-size: 0.95rem; margin: 20px 0 10px; }
-        .warning-note i { font-style: normal; background: #ffecb3; padding: 2px 10px; border-radius: 40px; margin-right: 10px; }
-        .table-wrapper { overflow-x: auto; border-radius: 20px; border: 1px solid #d6e2f0; background: white; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 1100px; white-space: nowrap; }
-        th { background: #e2ecf9; color: #103a5e; font-weight: 600; padding: 16px 8px; text-align: center; border-bottom: 2px solid #aac3db; }
-        td { padding: 12px 8px; text-align: center; border-bottom: 1px solid #d9e4f0; background-color: white; }
-        tr:last-child td { border-bottom: none; }
-        .sustainable { background-color: #e0f2e8 !important; color: #0f6e3f; font-weight: 500; }
-        .unsustainable { background-color: #ffe6e6 !important; color: #b13e3e; font-weight: 500; }
-        .warning-em { background-color: #fff2b5; font-weight: 600; }
-        .footnote { margin-top: 25px; font-size: 0.9rem; color: #376582; background: #eaf3fc; padding: 14px 22px; border-radius: 40px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0b1a2a;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            width: 100%;
+            background: #132433;
+            border-radius: 40px;
+            padding: 28px 30px;
+            box-shadow: 0 25px 50px -8px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.08);
+            border: 1px solid #2b4055;
+        }
+        /* 头部 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .title-section h1 {
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #b3e0ff, #7fc3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .title-section .badge {
+            background: #1f3b4f;
+            color: #9bc9ff;
+            border-radius: 60px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #31668a;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #0e1e2b;
+            padding: 12px 20px;
+            border-radius: 80px;
+            border: 1px solid #2e4b63;
+        }
+        .input-block {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1a2f40;
+            padding: 5px 18px 5px 22px;
+            border-radius: 50px;
+            border: 1px solid #3e5b77;
+        }
+        .input-block label {
+            color: #a1c2e0;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .input-block input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100px;
+            padding: 8px 0;
+            text-align: right;
+            border-bottom: 1px dashed #567e9f;
+        }
+        .input-block input:focus {
+            outline: none;
+            border-bottom: 2px solid #3c9eff;
+        }
+        .input-block span {
+            color: #7b9ec0;
+            font-size: 0.8rem;
+        }
+        .run-btn {
+            background: #2575d0;
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 6px 14px #102d4e;
+            transition: 0.2s;
+            border: 1px solid #4791e6;
+            letter-spacing: 0.3px;
+        }
+        .run-btn:hover {
+            background: #1b5ca8;
+            transform: scale(1.02);
+        }
+        /* 卡片网格 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #0f212f;
+            border-radius: 28px;
+            padding: 20px 22px;
+            border: 1px solid #2e4b63;
+            box-shadow: 0 10px 18px -6px #030b11;
+            backdrop-filter: blur(2px);
+        }
+        .card-title {
+            color: #8db3d0;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-value {
+            color: white;
+            font-size: 2.1rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 5px;
+        }
+        .card-detail {
+            display: flex;
+            justify-content: space-between;
+            color: #7b9fc1;
+            font-size: 0.9rem;
+            border-top: 1px dashed #2f4d64;
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+        .highlight-green { color: #9bffcf; }
+        .highlight-orange { color: #ffb77c; }
+        .highlight-red { color: #ff8a8a; font-weight: 600; }
+        .trend-up { color: #5ece7a; }
+        .trend-down { color: #ff7b72; }
+
+        /* 两行大卡片 */
+        .row {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .wide-card {
+            background: #0f212f;
+            border-radius: 32px;
+            padding: 22px 28px;
+            border: 1px solid #2e4b63;
+        }
+        .liquidity-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 18px 0;
+        }
+        .liquidity-item {
+            background: #1b3142;
+            border-radius: 28px;
+            padding: 15px 25px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+        .liquidity-item .label {
+            color: #96b9d8;
+            font-size: 0.8rem;
+        }
+        .liquidity-item .number {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        .mini-badge {
+            background: #1c384b;
+            border-radius: 40px;
+            padding: 4px 12px;
+            color: #bbdef5;
+            font-size: 0.8rem;
+        }
+        .event-log {
+            background: #0b1b27;
+            border-radius: 24px;
+            padding: 18px;
+            font-family: monospace;
+            color: #a5c6e0;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #254862;
+            font-size: 0.85rem;
+        }
+        .event-log div {
+            padding: 6px 0;
+            border-bottom: 1px solid #1d3649;
+        }
+        .footer-note {
+            margin-top: 30px;
+            color: #4f708b;
+            font-size: 0.8rem;
+            text-align: right;
+        }
+        hr {
+            border: 0.5px solid #24455b;
+            margin: 20px 0;
+        }
+        .red-alert {
+            background: #4e2525;
+            border: 1px solid #bc5a5a;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>💧 H代币 质押&税收 模拟器 <small>基于联合曲线 · 国库分红(U)</small></h1>
-    <div class="subtitle">⚡ 初始状态：发射后社区用10万U买入H → 池子 H=18.18M / U=110k · 社区持币681.82M · 奖励池300M · 国库0</div>
-
-    <div class="input-panel">
-        <div class="input-group">
-            <label>📥 每日购买U (用于质押)</label>
-            <input type="number" id="buyU" value="5000" step="100" min="0">
-            <span>USDT</span>
+<div class="dashboard" id="dash">
+    <div class="header">
+        <div class="title-section">
+            <h1>🐬 H代币 · 流动池模拟</h1>
+            <span class="badge">阶梯利率 · 国库分红(U) · 动态红线</span>
         </div>
-        <div class="input-group">
-            <label>📤 每日卖出H (解除质押)</label>
-            <input type="number" id="sellH" value="2000000" step="100000" min="0">
-            <span>H数量</span>
-        </div>
-        <div class="input-group">
-            <label>🧾 每日质押收益率 (%)</label>
-            <input type="number" id="rate" value="0.6" step="0.1" min="0" max="5">
-            <span>%</span>
-        </div>
-        <div class="input-group">
-            <label>🎁 每月分红比例 (%)</label>
-            <input type="number" id="divRate" value="10" step="1" min="0" max="100">
-            <span>% 国库U</span>
-        </div>
-        <div class="input-group">
-            <label>📅 模拟天数</label>
-            <input type="number" id="days" value="30" step="1" min="1" max="180">
-            <span>天</span>
-        </div>
-        <div class="btn-row">
-            <button class="btn" id="runBtn">🚀 运行模拟 · 生成表格</button>
+        <div class="controls">
+            <div class="input-block">
+                <label>每日买U</label>
+                <input type="number" id="buyU" value="5000" step="500" min="0">
+                <span>U</span>
+            </div>
+            <div class="input-block">
+                <label>每日卖H</label>
+                <input type="number" id="sellH" value="2000000" step="100000" min="0">
+                <span>H</span>
+            </div>
+            <div class="input-block">
+                <label>收益率%</label>
+                <input type="number" id="rate" value="0.6" step="0.1" min="0">
+                <span>%</span>
+            </div>
+            <div class="input-block">
+                <label>分红%</label>
+                <input type="number" id="divshare" value="10" step="5" min="0">
+                <span>%/30d</span>
+            </div>
+            <button class="run-btn" id="stepBtn">⏵ 模拟一天</button>
+            <button class="run-btn" id="resetBtn" style="background:#3f4f60;">⟲ 重置</button>
         </div>
     </div>
 
-    <div class="warning-note">
-        <i>📌 说明</i> 每日顺序：①卖出（解除质押并立即卖出，5%交易税归国库U）②买入（5%买入税归国库，剩余U买H并直接质押）③发放质押收益（从奖励池H → 社区持币）④每月分红（国库U按比例分给首批10万U质押者）。可持续性警示背景标色。
+    <!-- 核心指标卡片 4列 -->
+    <div class="grid">
+        <div class="card" id="priceCard">
+            <div class="card-title">💰 H价格 <span class="mini-badge">距红线</span></div>
+            <div class="card-value" id="priceVal">0.006050</div>
+            <div class="card-detail"><span id="priceChange">+0.0%</span> <span id="redlineDist" class="highlight-orange">⚠️ 接近红线</span></div>
+        </div>
+        <div class="card">
+            <div class="card-title">📊 今日交易量</div>
+            <div class="card-value" id="volumeToday">0 U</div>
+            <div class="card-detail"><span>净成交</span> <span id="netVol">0 U</span></div>
+        </div>
+        <div class="card">
+            <div class="card-title">🔒 质押总量</div>
+            <div class="card-value" id="stakedTotal">0.00M H</div>
+            <div class="card-detail"><span>今日 +/-</span> <span id="stakeChange">0 H</span></div>
+        </div>
+        <div class="card">
+            <div class="card-title">🏦 国库 U</div>
+            <div class="card-value" id="treasuryVal">5,340 U</div>
+            <div class="card-detail"><span>今日变化</span> <span id="treasuryChange">+0 U</span></div>
+        </div>
     </div>
 
-    <div class="table-wrapper" id="tableContainer">
-        <!-- 表格由js动态生成 -->
+    <!-- 第二行：流动池 + 社区钱包 + 矿池/护城河 -->
+    <div class="row">
+        <div class="wide-card">
+            <div class="card-title">💧 流动性池 (恒定乘积 k=2e12)</div>
+            <div class="liquidity-row">
+                <div class="liquidity-item">
+                    <div class="label">H 数量</div>
+                    <div class="number" id="poolH">18.18M</div>
+                </div>
+                <div class="liquidity-item">
+                    <div class="label">U 数量</div>
+                    <div class="number" id="poolU">110.0k</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; color:#8eb6d4; padding:0 5px;">
+                <span>📉 H变化 <span id="poolHChange">0</span></span>
+                <span>📈 U变化 <span id="poolUChange">0</span></span>
+            </div>
+        </div>
+        <div class="wide-card">
+            <div class="card-title">👛 社区钱包 (非质押、非池子)</div>
+            <div style="display: flex; gap: 20px; margin: 15px 0;">
+                <div><span class="mini-badge">持币 H</span> <span style="color:white; font-size: 1.8rem; font-weight:600;" id="circH">681.82M</span></div>
+                <div><span class="mini-badge">国库U</span> <span style="color:white; font-size: 1.8rem;" id="treasUsd">5,340</span></div>
+            </div>
+            <div style="color:#a5c7e5;">H变化 <span id="circChange">0</span> · U变化 0</div>
+        </div>
     </div>
 
-    <div class="footnote">
-        ⚙️ 初始k=2e12恒定 · 买入税5%进国库(U) · 卖出税5%从交易U中扣 · 奖励池初始3亿H · 社区持币为非质押、非池子、非奖励部分。若奖励池或国库归零则背景变红提醒。
+    <!-- 第三行：矿池 & 护城河 & 买入卖出指示 -->
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">⛏️ 矿池 (收益储备H)</div>
+            <div class="card-value" id="rewardPool">300.0M</div>
+            <div class="card-detail"><span>今日变化</span> <span id="rewardChange">0</span> <span id="sustainDays" class="highlight-green">∞ 天</span></div>
+        </div>
+        <div class="card">
+            <div class="card-title">🛡️ 护城河 (红线价格)</div>
+            <div class="card-value" id="redlinePrice">0.006000</div>
+            <div class="card-detail"><span>回购次数</span> <span id="buybackCount">0</span> <span id="safeTag">● 安全</span></div>
+        </div>
+        <div class="card">
+            <div class="card-title">📥 外部净买入 (U)</div>
+            <div class="card-value" id="netBuy">0 U</div>
+            <div class="card-detail"><span>负值代表净卖出</span> <span id="netBuySign"></span></div>
+        </div>
+        <div class="card">
+            <div class="card-title">📤 用户解质押比例</div>
+            <div class="card-value" id="unstakePct">0%</div>
+            <div class="card-detail"><span>24h avg</span> <span>--</span></div>
+        </div>
+    </div>
+
+    <!-- 事件日志 -->
+    <hr>
+    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+        <span class="card-title">📋 事件日志</span>
+        <span class="mini-badge" id="currentDay">第 0 天</span>
+    </div>
+    <div class="event-log" id="logArea">
+        <div>🔄 初始状态加载完成 (社区买入10万U后，价格≈0.00605)</div>
+        <div>⏱️ 等待模拟...</div>
+    </div>
+    <div class="footer-note">
+        ⚡ 每日顺序：卖出解质押 → 买入并质押 → 发放收益 → 每30天国库分红U (比例可调)。红线价格固定 0.006 U
     </div>
 </div>
 
 <script>
     (function() {
-        // 初始状态 (第0天)
+        // ---------- 固定初始参数 (基于修正后) ----------
         const INIT = {
-            poolH: 200000000 - 181818182,        // 18181818 实际精确: 2e12/110000 ≈ 18181818.1818
+            poolH: 200000000 - 181818181.8181818,   // ≈18181818.18
             poolU: 110000,
-            k: 2e12,                              // 恒定
+            k: 2e12,
             staked: 0,
             reward: 300000000,
-            treasury: 0,
-            circulating: 1000000000 - (200000000 - 181818182) - 300000000 - 0, // 总10亿 - 池子H - 奖励 - 质押(0)
-            // 计算: 池子H精确用浮点数, 总流通=10亿 - 池子H - 奖励 - 质押
+            treasury: 5000,      // 第一次买入税5000 (100000*0.05)
+            circulating: 1000000000 - (200000000 - 181818181.8181818) - 300000000,  // ≈681.82M
+            day: 0,
+            price: 0,
+            totalBuyVolume: 0,
+            totalSellVolume: 0,
+            lastPrice: 0.00605
         };
-        // 修正浮点: 初始池子H = 2e12/110000 ≈ 18181818.18181818
-        INIT.poolH = 200000000 - 181818181.8181818; // 实际上社区买入H=181818181.8181818, 池子剩18181818.1818182
-        INIT.poolU = 110000;
-        INIT.k = 2e12; 
-        INIT.circulating = 1000000000 - INIT.poolH - 300000000;  // 质押=0
+        INIT.price = INIT.poolU / INIT.poolH;  // 0.00605左右
+        INIT.lastPrice = INIT.price;
 
-        // 精确一点
-        const PRECISION = 6; // 显示小数位
+        // 当前状态
+        let state = JSON.parse(JSON.stringify(INIT));
+        let dayCounter = 0;
+        const logArea = document.getElementById('logArea');
+        const redlineFixed = 0.006;       // 红线价格
+
+        // 更新所有显示字段
+        function refreshDisplay() {
+            // 价格卡片
+            const price = state.poolU / state.poolH;
+            document.getElementById('priceVal').innerText = price.toFixed(6);
+            const priceChange = ((price - state.lastPrice) / state.lastPrice * 100).toFixed(2);
+            document.getElementById('priceChange').innerHTML = (priceChange>0?'+':'')+priceChange+'%';
+            const distRedline = ((price - redlineFixed)/redlineFixed*100).toFixed(1);
+            const redlineSpan = document.getElementById('redlineDist');
+            redlineSpan.innerText = (price >= redlineFixed) ? `⬆️ 高于红线 +${distRedline}%` : `⬇️ 低于红线 ${distRedline}%`;
+            redlineSpan.className = price < redlineFixed ? 'highlight-red' : 'highlight-orange';
+
+            // 交易量 (累计简化, 我们只显示今日净额)
+            const netVol = state.totalBuyVolume - state.totalSellVolume;
+            document.getElementById('volumeToday').innerText = Math.abs(netVol).toFixed(0) + ' U';
+            document.getElementById('netVol').innerText = (netVol>=0?'+':'') + netVol.toFixed(0) + ' U';
+
+            // 质押
+            document.getElementById('stakedTotal').innerText = (state.staked/1e6).toFixed(2) + 'M H';
+            // 今日质押变化在事件中更新, 暂时略
+            document.getElementById('treasuryVal').innerText = state.treasury.toFixed(0) + ' U';
+            // 池子
+            document.getElementById('poolH').innerText = (state.poolH/1e6).toFixed(2) + 'M';
+            document.getElementById('poolU').innerText = (state.poolU/1e3).toFixed(1) + 'k';
+            // 社区持币
+            document.getElementById('circH').innerText = (state.circulating/1e6).toFixed(2) + 'M';
+            document.getElementById('treasUsd').innerText = state.treasury.toFixed(0);
+            // 矿池
+            document.getElementById('rewardPool').innerText = (state.reward/1e6).toFixed(1) + 'M';
+            const sustain = state.staked > 0 && state.reward > 0 ? (state.reward / (state.staked * (rateInput/100))).toFixed(1) : '∞';
+            document.getElementById('sustainDays').innerText = (sustain === '∞' || sustain > 1000) ? '∞ 天' : sustain + ' 天';
+            if (state.reward < 100000) document.getElementById('sustainDays').className = 'highlight-red';
+            else document.getElementById('sustainDays').className = 'highlight-green';
+
+            document.getElementById('redlinePrice').innerText = redlineFixed.toFixed(6);
+            // 净买入 (今日)
+            const netBuyToday = state.totalBuyVolume - state.totalSellVolume;
+            document.getElementById('netBuy').innerText = netBuyToday.toFixed(0) + ' U';
+            // 解质押比例 (简单近似)
+            const unstakeRatio = state.staked > 0 ? (sellInput/state.staked*100).toFixed(1) : '0';
+            document.getElementById('unstakePct').innerText = unstakeRatio + '%';
+            document.getElementById('currentDay').innerText = `第 ${dayCounter} 天`;
+
+            // 国库变化粗略展示
+        }
+
+        // 添加日志
+        function addLog(msg) {
+            const d = new Date();
+            const time = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second:'2-digit' });
+            logArea.innerHTML = `<div>⏱️ ${time} ${msg}</div>` + logArea.innerHTML;
+            if (logArea.children.length > 7) logArea.removeChild(logArea.lastChild);
+        }
 
         // 获取输入
         function getInputs() {
@@ -111,188 +449,103 @@
                 buyU: parseFloat(document.getElementById('buyU').value) || 0,
                 sellH: parseFloat(document.getElementById('sellH').value) || 0,
                 rate: parseFloat(document.getElementById('rate').value) || 0,
-                divRate: parseFloat(document.getElementById('divRate').value) || 0,
-                days: parseInt(document.getElementById('days').value) || 30
+                divshare: parseFloat(document.getElementById('divshare').value) || 0
             };
         }
 
-        // 核心模拟函数
-        function simulate() {
-            const { buyU, sellH, rate, divRate, days } = getInputs();
-            if (days <= 0) return;
+        let sellInput = 0, buyInput = 0, rateInput = 0, divInput = 0;
 
-            // 深拷贝初始状态
-            let state = {
-                day: 0,
-                poolH: INIT.poolH,
-                poolU: INIT.poolU,
-                k: INIT.k,
-                staked: INIT.staked,
-                reward: INIT.reward,
-                treasury: INIT.treasury,
-                circulating: INIT.circulating
-            };
+        // 模拟一步 (一天)
+        function stepDay() {
+            const inp = getInputs();
+            buyInput = inp.buyU;
+            sellInput = inp.sellH;
+            rateInput = inp.rate;
+            divInput = inp.divshare;
 
-            // 存储所有天数 (第0天加上模拟天数)
-            let records = [ { ...state, price: state.poolU / state.poolH } ];
-
-            for (let d = 1; d <= days; d++) {
-                // 深拷贝当前状态
-                let cur = {
-                    poolH: records[d-1].poolH,
-                    poolU: records[d-1].poolU,
-                    k: records[d-1].k,          // 恒等于2e12
-                    staked: records[d-1].staked,
-                    reward: records[d-1].reward,
-                    treasury: records[d-1].treasury,
-                    circulating: records[d-1].circulating
-                };
-
-                // ---------- 1. 卖出 H (解除质押并卖出) ----------
-                if (sellH > 0) {
-                    let sellAmount = Math.min(sellH, cur.staked);  // 不能超过质押总量
-                    if (sellAmount > 0) {
-                        // 解除质押：从staked中移除, 暂时加到circulating (但卖出后又会减掉)
-                        cur.staked -= sellAmount;
-                        // 卖出操作: 池子H增加, 池子U减少, 税收归国库
-                        const newPoolU = cur.k / (cur.poolH + sellAmount);
-                        const uDelta = cur.poolU - newPoolU;       // 池子减少的U (用户应得+税收)
-                        const tax = 0.05 * uDelta;
-                        cur.treasury += tax;
-                        // 用户实际得到 0.95*uDelta，但用户u我们不追踪, 只影响池子
-                        cur.poolU = newPoolU;
-                        cur.poolH = cur.poolH + sellAmount;
-                        // circulating 因为解除增加了sellAmount，又卖出减少了sellAmount，净不变
-                        // 所以 circulating 不变
-                    }
-                }
-
-                // ---------- 2. 买入 H (用U购买并直接质押) ----------
-                if (buyU > 0) {
-                    const tax = 0.05 * buyU;
-                    const uIntoPool = 0.95 * buyU;
-                    cur.treasury += tax;
-                    const newPoolU = cur.poolU + uIntoPool;
-                    const newPoolH = cur.k / newPoolU;      // 恒定乘积
-                    const userH = cur.poolH - newPoolH;     // 用户获得的H
-                    if (userH > 0) {
-                        cur.poolH = newPoolH;
-                        cur.poolU = newPoolU;
-                        // 用户立即质押
-                        cur.staked += userH;
-                        // 注意: circulating 不变 (用户没经过持币)
-                    } else {
-                        // 若userH<=0 (极端情况, 忽略)
-                    }
-                }
-
-                // ---------- 3. 发放质押收益 (从奖励池到circulating) ----------
-                if (rate > 0 && cur.staked > 0) {
-                    const rawGain = cur.staked * (rate / 100);
-                    const actualGain = Math.min(rawGain, cur.reward);
-                    cur.reward -= actualGain;
-                    cur.circulating += actualGain;
-                }
-
-                // ---------- 4. 月度分红 (每30天) ----------
-                if (d % 30 === 0 && divRate > 0 && cur.treasury > 0) {
-                    const dividend = cur.treasury * (divRate / 100);
-                    cur.treasury -= dividend;
-                    // 分红给出质押U的用户, 不影响H状态, 只是国库减少
-                }
-
-                // 计算价格
-                const price = cur.poolU / cur.poolH;
-                // 保存记录
-                records.push({
-                    day: d,
-                    poolH: cur.poolH,
-                    poolU: cur.poolU,
-                    k: cur.k,
-                    staked: cur.staked,
-                    reward: cur.reward,
-                    treasury: cur.treasury,
-                    circulating: cur.circulating,
-                    price: price
-                });
+            // --- 卖出阶段 (先卖, 从质押里扣除) ---
+            let sellAmount = Math.min(sellInput, state.staked);
+            let sellTaxU = 0;
+            if (sellAmount > 0) {
+                // 解除质押
+                state.staked -= sellAmount;
+                // 池子变化: H增加, U减少
+                const newPoolU = state.k / (state.poolH + sellAmount);
+                const uDelta = state.poolU - newPoolU;   // 用户得到+税收
+                sellTaxU = 0.05 * uDelta;
+                state.treasury += sellTaxU;
+                // 更新池子
+                state.poolU = newPoolU;
+                state.poolH = state.poolH + sellAmount;
+                // 卖出交易量累加
+                state.totalSellVolume += uDelta;   // 用户支付的总U(含税)
+                addLog(`卖出 ${(sellAmount/1e6).toFixed(2)}M H，税收 ${sellTaxU.toFixed(2)} U 入国库`);
             }
 
-            return records;
+            // --- 买入阶段 (用U购买, 直接质押) ---
+            let buyAmountH = 0;
+            if (buyInput > 0) {
+                const tax = 0.05 * buyInput;
+                state.treasury += tax;
+                const uIntoPool = 0.95 * buyInput;
+                const newPoolU = state.poolU + uIntoPool;
+                const newPoolH = state.k / newPoolU;
+                buyAmountH = state.poolH - newPoolH;
+                if (buyAmountH > 0) {
+                    state.poolH = newPoolH;
+                    state.poolU = newPoolU;
+                    // 直接质押
+                    state.staked += buyAmountH;
+                    state.totalBuyVolume += buyInput;   // 记录总买入U
+                    addLog(`买入 ${(buyAmountH/1e6).toFixed(2)}M H 并质押，税收 ${tax.toFixed(2)} U 入国库`);
+                }
+            }
+
+            // --- 发放质押收益 ---
+            if (rateInput > 0 && state.staked > 0) {
+                const rawGain = state.staked * (rateInput / 100);
+                const actualGain = Math.min(rawGain, state.reward);
+                state.reward -= actualGain;
+                state.circulating += actualGain;
+                addLog(`发放收益 ${(actualGain/1e6).toFixed(2)}M H (${rateInput}%)`);
+            }
+
+            // --- 每月分红 (每30天) ---
+            dayCounter++;
+            if (dayCounter % 30 === 0 && divInput > 0 && state.treasury > 0) {
+                const dividend = state.treasury * (divInput / 100);
+                state.treasury -= dividend;
+                addLog(`🎁 月度分红: 国库支出 ${dividend.toFixed(2)} U 给首批质押者`);
+            }
+
+            // 更新 lastPrice 用于下次变化计算
+            state.lastPrice = state.poolU / state.poolH;
+            refreshDisplay();
         }
 
-        // 渲染表格
-        function renderTable(records) {
-            if (!records) return;
-            const container = document.getElementById('tableContainer');
-            let html = `<table><thead><tr>
-                <th>天</th><th>池子H</th><th>池子U</th><th>价格(H/U)</th><th>质押总量(H)</th>
-                <th>奖励池(H)</th><th>国库U</th><th>社区持币(H)</th><th>可持续性</th>
-            </tr></thead><tbody>`;
-
-            for (let i = 0; i < records.length; i++) {
-                const r = records[i];
-                const price = r.price;
-                // 判断可持续性警示
-                let sustainClass = '';
-                let sustainText = '✅ 健康';
-                if (r.reward <= 0.001 && r.staked > 0.001) {
-                    sustainClass = 'unsustainable';
-                    sustainText = '⚠️ 奖励池枯竭';
-                } else if (r.treasury <= 0.001 && i>0 && i%30===0) {
-                    // 仅当分红日可能提醒, 但国库空了都算警示
-                    sustainClass = 'unsustainable';
-                    sustainText = '⚠️ 国库枯竭';
-                } else if (r.reward < 100000) {
-                    sustainClass = 'warning-em';
-                    sustainText = '⚠️ 奖励池低位';
-                } else {
-                    sustainClass = 'sustainable';
-                }
-
-                // 数值格式化
-                const formatNum = (val, digits=2) => {
-                    if (val === undefined) return '-';
-                    if (Math.abs(val) < 0.01 && val !== 0) return val.toExponential(2);
-                    return val.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                };
-                const formatBig = (val) => {
-                    if (val > 1e9) return (val/1e9).toFixed(2) + 'B';
-                    if (val > 1e6) return (val/1e6).toFixed(2) + 'M';
-                    if (val > 1e3) return (val/1e3).toFixed(2) + 'k';
-                    return val.toFixed(0);
-                };
-
-                html += `<tr class="${sustainClass}">`;
-                html += `<td>${r.day}</td>`;
-                html += `<td>${formatBig(r.poolH)}</td>`;
-                html += `<td>${formatBig(r.poolU)}</td>`;
-                html += `<td>$${price.toFixed(6)}</td>`;
-                html += `<td>${formatBig(r.staked)}</td>`;
-                html += `<td>${formatBig(r.reward)}</td>`;
-                html += `<td>${formatBig(r.treasury)}</td>`;
-                html += `<td>${formatBig(r.circulating)}</td>`;
-                html += `<td>${sustainText}</td>`;
-                html += `</tr>`;
-            }
-            html += `</tbody></table>`;
-            container.innerHTML = html;
+        // 重置
+        function reset() {
+            state = JSON.parse(JSON.stringify(INIT));
+            dayCounter = 0;
+            state.totalBuyVolume = 0;
+            state.totalSellVolume = 0;
+            state.lastPrice = state.poolU / state.poolH;
+            refreshDisplay();
+            addLog('🔄 重置至初始状态 (社区买入10万U后，价格≈0.00605，质押0)');
         }
 
-        // 绑定按钮事件
-        document.getElementById('runBtn').addEventListener('click', () => {
-            try {
-                const records = simulate();
-                renderTable(records);
-            } catch (e) {
-                alert('模拟出错，请检查输入。' + e.message);
-            }
+        // 绑定
+        document.getElementById('stepBtn').addEventListener('click', () => {
+            stepDay();
+        });
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            reset();
         });
 
-        // 页面载入时自动运行一次默认值
-        window.addEventListener('load', () => {
-            const records = simulate();
-            renderTable(records);
-        });
+        // 初始显示
+        reset();
+        // 预置一次日志
+        addLog('✅ 模拟器就绪 · 可逐日模拟');
     })();
 </script>
 </body>
